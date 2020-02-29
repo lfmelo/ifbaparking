@@ -1,0 +1,136 @@
+﻿// IFBA Parking
+// FEVEREIRO DE 2020
+// Programa : RFID - Controle de acesso / Leitura de Etiquetas / Abertura de Cancela / LEDs
+// Autor : Lucas Fernandes de Melo
+// IFBA - Instituto Federal de Educação Ciência e Tecnologia da Bahia
+// Bacharelando em Sistemas de Informação
+
+
+#include <SPI.h>
+#include <MFRC522.h>
+#include <Servo.h>
+
+#define SS_PIN 53
+#define RST_PIN 5
+// Definindo os pinos do modulo RC522
+MFRC522 mfrc522(SS_PIN, RST_PIN);
+Servo servo; // cria um objeto servo
+
+// Registrando os LEDs indicadores de permissão ou negação
+int led_liberado = 7;
+int led_negado = 6;
+
+ String conteudo;
+
+void setup(){
+  pinMode(led_liberado, OUTPUT);
+  pinMode(led_negado, OUTPUT);
+  // Define que o servo esta ligado a porta digital 4
+  servo.attach(4);
+  // Move o servo para a posicao inicial (cancela fechada)
+  servo.write(180);
+  // Inicia a serial
+  Serial.begin(9600);
+  // Inicia  SPI bus
+  SPI.begin();
+  // Inicia MFRC522
+  mfrc522.PCD_Init();
+}
+
+void loop(){
+  /////////////////////////// SERVO MOTOR ////////////////////////////////////
+  //Recebendo valor do sistema para abertura / fechamento da cancela//////////
+  //DEFINIDO QUE O VALOR A SER ENVIADO DO SISTEMA SERÁ L ou B//
+  char estado = Serial.read();
+
+  
+  if('L' == estado){
+    digitalWrite(led_liberado, HIGH);
+
+  conteudo = "";
+  Serial.println(conteudo);
+  
+ for(int i = 180; i > 91; i=i-2){
+  
+ servo.write(i);
+
+ delay(25);
+  }
+  
+ servo.write(180);   servo.write(90);
+
+//tempo da cancela aberta
+
+
+
+for(int tc = 1; tc < 100; tc=tc+1){
+
+    delay(100);
+  char estado = Serial.read();
+  if('F' == estado){
+    digitalWrite(led_liberado, LOW);
+    digitalWrite(led_negado, LOW); 
+ servo.write(180);
+ return;
+  }
+}
+//tempo da cancela aberta
+
+
+    
+   // servo.write(180);
+   
+ for(int i = 90; i < 180; i=i+2){
+  
+ servo.write(i);
+  delay(25);
+  }
+    servo.write(180);
+
+    digitalWrite(led_liberado, LOW);
+    Serial.println("");
+    return;
+  } else if('B' == estado){
+
+  conteudo = "";
+  Serial.println(conteudo);
+ 
+    for(int i = 0; i < 3; i++){
+      digitalWrite(led_negado, HIGH);
+      delay(500);
+      digitalWrite(led_negado, LOW);
+      delay(200);
+      Serial.println("");
+    }
+
+      digitalWrite(led_negado, HIGH);
+      delay(2000);
+      digitalWrite(led_negado, LOW);
+    
+    return;
+  }
+  
+  // Aguarda a aproximacao do cartao
+  if ( ! mfrc522.PICC_IsNewCardPresent()){
+    return;
+  }
+  // Seleciona um dos cartoes
+  if ( ! mfrc522.PICC_ReadCardSerial()){
+    return;
+  }
+    
+  String conteudo = "";
+
+  for (byte i = 0; i < mfrc522.uid.size; i++){
+    conteudo.concat(String(mfrc522.uid.uidByte[i] < 0x10 ? " 0" : " "));
+    conteudo.concat(String(mfrc522.uid.uidByte[i], HEX));
+
+  }
+
+  conteudo.toUpperCase();
+  //Enviando o valor para o sistema
+ Serial.println(conteudo);
+
+ 
+  delay(1000);
+}
