@@ -3,12 +3,15 @@ package view;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.Timestamp;
 import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -23,6 +26,7 @@ import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import model.bean.Movimento;
+import model.bean.Usuario;
 import model.bean.Veiculo;
 import model.bean.enumeration.MovimentoEnum;
 import model.dao.MovimentoDAO;
@@ -44,8 +48,8 @@ public class TelaPrincipal extends JInternalFrame {
 	private Color autorizado = new Color(0, 128, 0);
 	private Color naoAutorizado = Color.RED;
 	private JTextField txtAviso;
-	protected JButton btnAbrir = new JButton("Abrir Cancela");
-	protected JButton btnFechar = new JButton("Fechar Cancela");
+	//protected JButton btnAbrir = new JButton("Abrir Cancela");
+	//protected JButton btnFechar = new JButton("Fechar Cancela");
 	protected Veiculo veiculo = new Veiculo();
 
 	MovimentoTableModel movimentoTableModel = new MovimentoTableModel();
@@ -82,7 +86,7 @@ public class TelaPrincipal extends JInternalFrame {
 		txtVeiculo.setEditable(false);
 		txtVeiculo.setFont(new Font("Tahoma", Font.BOLD, 20));
 		txtVeiculo.setColumns(10);
-		txtVeiculo.setBounds(103, 33, 651, 25);
+		txtVeiculo.setBounds(103, 33, 450, 25);
 		panelIdentificacao.add(txtVeiculo);
 		
 		JLabel lblCor = new JLabel("Cor:");
@@ -108,7 +112,7 @@ public class TelaPrincipal extends JInternalFrame {
 		txtFabricante.setFont(new Font("Tahoma", Font.BOLD, 20));
 		txtFabricante.setEditable(false);
 		txtFabricante.setColumns(10);
-		txtFabricante.setBounds(138, 88, 616, 25);
+		txtFabricante.setBounds(138, 88, 450, 25);
 		panelIdentificacao.add(txtFabricante);
 		
 		JLabel lblPlaca = new JLabel("Placa:");
@@ -191,8 +195,83 @@ public class TelaPrincipal extends JInternalFrame {
 						mov.setMovimento(MovimentoEnum.ENTRADA);
 					}
 					movimentoDAO.saveOrUpdate(mov);
+				
+				
+				
+				
+				
+					//Lucas botao1	
+					
+					JButton btnAbrir = new JButton("Abrir Cancela");
+					btnAbrir.setFont(new Font("Tahoma", Font.PLAIN, 14));
+					btnAbrir.setBounds(610, 10, 150, 50);
+					panelIdentificacao.add(btnAbrir);
+					btnAbrir.addActionListener(new ActionListener() {
+						public void actionPerformed(ActionEvent e) {
+							principal.arduino.send("L");
+						}
+					});		
+					
+					JButton btnFechar = new JButton("Fechar Cancela");
+					btnFechar.setFont(new Font("Tahoma", Font.PLAIN, 14));
+					btnFechar.setBounds(610, 60, 150, 50);
+					panelIdentificacao.add(btnFechar);
+					btnFechar.addActionListener(new ActionListener() {
+						public void actionPerformed(ActionEvent e) {
+							principal.arduino.send("F");
+						}
+					});		
+					
+					//Lucas botao1	
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
 				} else {
 					principal.arduino.send("B");
+					
+					
+					//Lucas botao1	
+					
+					JButton btnAbrir = new JButton("Abrir Cancela");
+					btnAbrir.setFont(new Font("Tahoma", Font.PLAIN, 14));
+					btnAbrir.setBounds(610, 10, 150, 50);
+					panelIdentificacao.add(btnAbrir);
+					btnAbrir.addActionListener(new ActionListener() {
+						public void actionPerformed(ActionEvent e) {
+							principal.arduino.send("L");
+						}
+					});		
+					
+					JButton btnFechar = new JButton("Fechar Cancela");
+					btnFechar.setFont(new Font("Tahoma", Font.PLAIN, 14));
+					btnFechar.setBounds(610, 60, 150, 50);
+					panelIdentificacao.add(btnFechar);
+					btnFechar.addActionListener(new ActionListener() {
+						public void actionPerformed(ActionEvent e) {
+							principal.arduino.send("F");
+						}
+					});		
+					
+					//Lucas botao1				
+					
+					
+					
+					
+					
+					
+					
+					
 				}
 			} else {
 				principal.arduino.send("B");
@@ -206,6 +285,33 @@ public class TelaPrincipal extends JInternalFrame {
 				txtAviso.setBorder(null);
 				txtAviso.setBounds(10, 289, 744, 53);
 				panelIdentificacao.add(txtAviso);
+				
+				
+				//Lucas botao1	
+				
+				JButton btnAbrir = new JButton("Abrir Cancela");
+				btnAbrir.setFont(new Font("Tahoma", Font.PLAIN, 14));
+				btnAbrir.setBounds(610, 10, 150, 50);
+				panelIdentificacao.add(btnAbrir);
+				btnAbrir.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						principal.arduino.send("L");
+					}
+				});		
+				
+				JButton btnFechar = new JButton("Fechar Cancela");
+				btnFechar.setFont(new Font("Tahoma", Font.PLAIN, 14));
+				btnFechar.setBounds(610, 60, 150, 50);
+				panelIdentificacao.add(btnFechar);
+				btnFechar.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						principal.arduino.send("F");
+					}
+				});		
+				
+				//Lucas botao1	
+				
+				
 			}
 		}
 		////////////////////////////////////////////////////////////////////////////////

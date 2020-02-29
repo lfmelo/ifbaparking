@@ -61,6 +61,7 @@ public class PrincipalFrame extends JFrame {
 					frame.arduino.initialize();
 					frame.setVisible(true);
 					
+					
 					//ADD BY LUCAS
 				
 					//ADD BY LUCAS
@@ -89,7 +90,7 @@ public class PrincipalFrame extends JFrame {
 			etiqueta = "";
 		}
 	}
-	
+
 	public void abrirTelaPrincipal(String etiqueta) {
 		if(telaPrincipal != null)
 			telaPrincipal.dispose();
